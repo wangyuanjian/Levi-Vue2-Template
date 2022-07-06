@@ -2,6 +2,7 @@
 
 - [这是 `Levi` 自己搭建起来的 `Vue 2` 项目, 配合各种组件和功能, 不断完善中...](#这是-levi-自己搭建起来的-vue-2-项目-配合各种组件和功能-不断完善中)
   - [配置 `vue-i18n`](#配置-vue-i18n)
+  - [配置 `tailwindcss`](#配置-tailwindcss)
 
 <!-- /TOC -->
 
@@ -60,4 +61,33 @@
       // 可不选
       window.onlanguagechange = function() {
         app.$i18n.locale = navigator.language;
+      }
+
+### 配置 `tailwindcss`
+1. 安装
+    - ```shell
+      npm install tailwindcss@npm:@tailwindcss/postcss7-compat postcss@^7 autoprefixer@^9
+2. 创建 `tailwindcss` 的配置文件
+    - ```shell
+      npx tailwindcss init -p
+      ```
+      - 📕`-p` 表示同时创建 `postcss` 的配置文件
+    - 执行这个命令后, 根目录下会出现两个新的配置文件 `tailwind.config.js` 和 `postcss.config.js`
+3. 在 `main.ts` 中引入样式文件
+    - ```js
+      import 'tailwindcss/tailwind.css'
+4. 接下来就可以使用样式啦
+    - ```html
+      <small class="text-green-500">{{ $t('greeting', {name}) }}</small>
+5. 增加配置 `tailwind.config.js` 的配置, 优化生产环境下的 `tailwindcss` 打包文件大小
+    - ```js
+      module.exports = {
+        purge: [
+          './src/**/*.vue'
+        ],
+        content: [],
+        theme: {
+          extend: {},
+        },
+        plugins: [],
       }

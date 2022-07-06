@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <h1>This is an about page, {{ $t('morning') }}</h1>
-    <small>{{ $t('greeting', {name}) }}</small>
+    <small class="text-green-500">{{ $t('greeting', {name}) }}</small>
   </div>
 </template>
 
