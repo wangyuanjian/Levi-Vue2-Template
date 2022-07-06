@@ -3,6 +3,7 @@
 - [这是 `Levi` 自己搭建起来的 `Vue 2` 项目, 配合各种组件和功能, 不断完善中...](#这是-levi-自己搭建起来的-vue-2-项目-配合各种组件和功能-不断完善中)
   - [配置 `vue-i18n`](#配置-vue-i18n)
   - [配置 `tailwindcss`](#配置-tailwindcss)
+  - [配置 `element-ui`](#配置-element-ui)
 
 <!-- /TOC -->
 
@@ -79,7 +80,7 @@
 4. 接下来就可以使用样式啦
     - ```html
       <small class="text-green-500">{{ $t('greeting', {name}) }}</small>
-5. 增加配置 `tailwind.config.js` 的配置, 优化生产环境下的 `tailwindcss` 打包文件大小
+5. 增加 `tailwind.config.js` 的配置, 优化生产环境下的 `tailwindcss` 打包文件大小
     - ```js
       module.exports = {
         purge: [
@@ -90,4 +91,67 @@
           extend: {},
         },
         plugins: [],
+      }
+### 配置 `element-ui`
+1. 安装
+    - ```shell
+      npm i element-ui -S
+2. 全局引入
+    - 创建 `src/element/index.ts`
+    - ```ts
+      import Vue from 'vue';
+      import ElementUI from 'element-ui';
+      import 'element-ui/lib/theme-chalk/index.css';
+
+      Vue.use(ElementUI);
+    - 在 `main.ts` 中引入上面的文件
+    - ```ts
+      import './element'
+3. 按需引入
+    - 同样在 `src/element/index.ts`, 注释掉全局引入的内容
+    - ```ts
+      import Vue from 'vue';
+      import { Button, Input, Loading, MessageBox, Message } from 'element-ui';
+
+      Vue.use(Button);
+      Vue.use(Input);
+
+      Vue.use(Loading.directive);
+
+      Vue.prototype.$loading = Loading.service;
+      Vue.prototype.$msgbox = MessageBox;
+      Vue.prototype.$alert = MessageBox.alert;
+      Vue.prototype.$confirm = MessageBox.confirm;
+      Vue.prototype.$prompt = MessageBox.prompt;
+      Vue.prototype.$notify = Notification;
+      Vue.prototype.$message = Message;
+    - 安装 `babel-plugin-component` 依赖, 借助这个插件, 我们可以只引入需要的组件, 以达到减小项目体积的目的
+    - ```shell
+      npm install babel-plugin-component -D
+    - 修改 `babel.config.js`
+    - ```js
+      // 注释的内容为修改之前
+      // module.exports = {
+      //  presets: [
+      //    '@vue/cli-plugin-babel/preset'
+      //  ]
+      // }
+      module.exports = {
+        presets: [
+          [
+            '@vue/cli-plugin-babel/preset',
+            {
+              module: false
+            }
+          ]
+        ],
+        plugins: [
+          [
+            'component',
+            {
+              libraryName: 'element-ui',
+              'styleLibraryName': 'theme-chalk'
+            }
+          ]
+        ]
       }
