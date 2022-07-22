@@ -4,6 +4,7 @@
   - [配置 `vue-i18n`](#配置-vue-i18n)
   - [配置 `tailwindcss`](#配置-tailwindcss)
   - [配置 `element-ui`](#配置-element-ui)
+  - [配置 `NProgress`](#配置-nprogress)
 
 <!-- /TOC -->
 
@@ -155,3 +156,29 @@
           ]
         ]
       }
+### 配置 `NProgress`
+1. 安装. 不仅安装 `nprogress` 还要安装 `@types/nprogress` 哦
+    - ```
+      npm i --save nprogress
+      npm i --save-dev @types/nprogress
+2. 在 `main.ts` 中引入 `NProgress` 和样式
+    - ```ts
+      import NProgress from 'nprogress';
+      import 'nprogress/nprogress.css'
+    - 增加配置
+    - ```ts
+      NProgress.configure({ 
+        // 不出现右边转圈的小圆环
+        showSpinner: false,
+        easing: 'ease',
+        speed: 300,
+      });
+    - 在切换路由时增加 NProgress 的显示与隐藏
+    - ```ts
+      router.beforeEach((to, from, next) => {
+        NProgress.start();
+        next();
+      })
+      router.afterEach(() => {
+        NProgress.done();
+      })

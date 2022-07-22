@@ -5,8 +5,25 @@ import store from './store';
 import i18n from './i18n';
 import 'tailwindcss/tailwind.css';
 import './element'
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css'
 
 Vue.config.productionTip = false;
+
+// NProgress 的一些配置
+NProgress.configure({ 
+  showSpinner: false,
+  easing: 'ease',
+  speed: 300,
+});
+// 配置路由切换的时候设置
+router.beforeEach((to, from, next) => {
+  NProgress.start();
+  next();
+})
+router.afterEach(() => {
+  NProgress.done();
+})
 
 const app = new Vue({
   router,
