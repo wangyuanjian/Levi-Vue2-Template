@@ -7,6 +7,8 @@ import 'tailwindcss/tailwind.css';
 import './element'
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css'
+// 引入全局scss
+import './assets/css/global.scss'
 
 Vue.config.productionTip = false;
 
@@ -23,6 +25,18 @@ router.beforeEach((to, from, next) => {
 })
 router.afterEach(() => {
   NProgress.done();
+})
+
+// 检测深浅主题
+let matchResult = window.matchMedia('(prefers-color-scheme: dark)')
+document.documentElement.setAttribute('data-theme', matchResult.matches ? 'dark' : 'light');
+matchResult.addEventListener('change', (e) => {
+  // 如果匹配暗色主题
+  if (e.matches) {
+    store.dispatch('changeTheme', 'dark')
+  } else {
+    store.dispatch('changeTheme', 'light')
+  }
 })
 
 const app = new Vue({
